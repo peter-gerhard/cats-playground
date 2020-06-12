@@ -7,5 +7,7 @@ object Main {
 //    EqDemo.demo()
 //    SemigroupDemo.demo()
     MonoidDemo.demo()
+
+//    KleisliDemo.demo()
   }
 }

@@ -1,7 +1,6 @@
 package com.github.pgerhard
 
 import cats.kernel.Monoid
-import cats.Show
 
 object MonoidDemo {
 
@@ -13,42 +12,10 @@ object MonoidDemo {
     val rationals = Seq(a, b, c)
     val combined = Monoid[Rational].combineAll(rationals)
 
-    println(Show[Rational].show(combined))
-    println(Show[Rational].show(Rational(270, 192)))
+    println(combined)
+    println(Rational(270, 192))
 
-    import cats.implicits._
+    import cats.implicits.catsKernelStdMonoidForString
     println(Monoid[String].combineAll(Seq("Hello", " ", "Monoid", "!")))
-  }
-
-  case class Rational(numerator: Int, denominator: Int)  {
-    lazy val gcd: Int = Rational.calcGcd(numerator, denominator)
-  }
-
-  object Rational {
-
-    val zero: Rational = Rational(0)
-
-    def apply(numerator: Int): Rational = new Rational(numerator, 1)
-
-    implicit val rationalMultiplicationMonoid: Monoid[Rational] = new Monoid[Rational] {
-      override def empty: Rational = zero
-
-      override def combine(x: Rational, y: Rational): Rational =
-        Rational(x.numerator * y.numerator, x.denominator * y.denominator)
-    }
-
-    implicit val rationalShow: Show[Rational] = new Show[Rational] {
-      override def show(t: Rational): String =
-        s"${t.numerator / t.gcd}/${t.denominator / t.gcd}"
-    }
-
-    @scala.annotation.tailrec
-    def calcGcd(x: Int, y: Int): Int =
-      if (x == 0)
-        y
-      else if (y == 0)
-        x
-      else
-        calcGcd(y, x % y)
   }
 }
